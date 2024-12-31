@@ -32,7 +32,53 @@ const AddPlant = () => {
       email: user.email,
     };
 
-    // Create new plant document in Firebase
+    // Create new plant  object
+    const plant = {
+      name,
+      description,
+      category,
+      price,
+      quantity,
+      image: imageUrl,
+      seller,
+    };
+
+    console.table({plant});
+    // Add plant details to the plants collection
+    //...
+
+    // Add plant details to the users collection
+    //...
+
+    // Add plant details to the categories collection
+    //...
+
+    // Add plant details to the brands collection
+    //...
+
+    // Add plant details to the locations collection
+    //...
+
+    // Add plant details to the plant care tips collection
+    //...
+
+    // Add plant details to the plant care routines collection
+    //...
+
+    // Add plant details to the plant care recommendations collection
+    //...
+
+    // Add plant details to the plant care precautions collection
+    //...
+
+    // Add plant details to the plant care updates collection
+    //...
+
+    // Add plant details to the plant care videos collection
+    //...
+
+    // Add plant details to the plant care resources collection
+    //...
     //...
 
     // Add plant details to the seller's inventory
