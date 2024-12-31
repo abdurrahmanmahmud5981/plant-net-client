@@ -1,22 +1,57 @@
-import { Helmet } from 'react-helmet-async'
-import AddPlantForm from '../../../components/Form/AddPlantForm'
+import { Helmet } from "react-helmet-async";
+import AddPlantForm from "../../../components/Form/AddPlantForm";
+import imageUpload from "../../../api/utils";
+import useAuth from "../../../hooks/useAuth";
 
 const AddPlant = () => {
-  const handleSubmit = async e => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    const plant = {
-      name: formData.get('name'),
-      category: formData.get('category'),
-      description: formData.get('description'),
-      price: Number(formData.get('price')),
-      quantity: Number(formData.get('quantity')),
-      image: formData.get('image'),
-    }
+  const { user } = useAuth();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // const formData = new FormData(e.target)
+    // const plant = {
+    //   name: formData.get('name'),
+    //   category: formData.get('category'),
+    //   description: formData.get('description'),
+    //   price: Number(formData.get('price')),
+    //   quantity: Number(formData.get('quantity')),
+    //   image: formData.get('image'),
+    // }
+    const form = e.target;
+    const name = form.name.value;
+    const description = form.description.value;
+    const category = form.category.value;
+    const price = parseFloat(form.price.value);
+    const quantity = parseInt(form.quantity.value);
+    const image = form.image.files[0];
+    const imageUrl = await imageUpload(image);
 
+    // seller information
+    const seller = {
+      name: user.displayName,
+      image: user.photoURL,
+      email: user.email,
+    };
+
+    // Create new plant document in Firebase
+    //...
+
+    // Add plant details to the seller's inventory
+    //...
+
+    // Update user's inventory count
+    //...
+
+    // Add user's recent activity (added plant)
+    //...
+
+    // Clear form fields
+    //...
+
+    // Redirect to inventory page
+    //...
     // Send plant data to Firebase
     // ...
-  }
+  };
   return (
     <div>
       <Helmet>
@@ -26,7 +61,7 @@ const AddPlant = () => {
       {/* Form */}
       <AddPlantForm handleSubmit={handleSubmit} />
     </div>
-  )
-}
+  );
+};
 
-export default AddPlant
+export default AddPlant;
