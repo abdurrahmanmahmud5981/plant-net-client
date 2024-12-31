@@ -20,7 +20,7 @@ const SignUp = () => {
     const image = form.image.files[0];
 
     //1. send image to imgbb
-    const photoURL = imageUpload(image);
+    const photoURL = await imageUpload(image);
 
     try {
       //2. User Registration
