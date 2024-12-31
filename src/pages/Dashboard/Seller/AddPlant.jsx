@@ -2,9 +2,11 @@ import { Helmet } from "react-helmet-async";
 import AddPlantForm from "../../../components/Form/AddPlantForm";
 import imageUpload from "../../../api/utils";
 import useAuth from "../../../hooks/useAuth";
+import { useState } from "react";
 
 const AddPlant = () => {
   const { user } = useAuth();
+ const [uploadButtonText, setUploadButtonText] = useState('Upload Image');
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const formData = new FormData(e.target)
@@ -105,7 +107,7 @@ const AddPlant = () => {
       </Helmet>
 
       {/* Form */}
-      <AddPlantForm handleSubmit={handleSubmit} />
+      <AddPlantForm handleSubmit={handleSubmit} uploadButtonText={uploadButtonText} setUploadButtonText={setUploadButtonText}/>
     </div>
   );
 };
