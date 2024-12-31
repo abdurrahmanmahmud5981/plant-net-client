@@ -3,12 +3,17 @@ import AddPlantForm from "../../../components/Form/AddPlantForm";
 import imageUpload from "../../../api/utils";
 import useAuth from "../../../hooks/useAuth";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const AddPlant = () => {
   const { user } = useAuth();
- const [uploadButtonText, setUploadButtonText] = useState({name:'Upload Image'});
+  const [uploadButtonText, setUploadButtonText] = useState({
+    name: "Upload Image",
+  });
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     // const formData = new FormData(e.target)
     // const plant = {
     //   name: formData.get('name'),
@@ -45,60 +50,18 @@ const AddPlant = () => {
       seller,
     };
 
-    console.table({plant});
-    // Add plant details to the plants collection
-    //...
-
-    // Add plant details to the users collection
-    //...
-
-    // Add plant details to the categories collection
-    //...
-
-    // Add plant details to the brands collection
-    //...
-
-    // Add plant details to the locations collection
-    //...
-
-    // Add plant details to the plant care tips collection
-    //...
-
-    // Add plant details to the plant care routines collection
-    //...
-
-    // Add plant details to the plant care recommendations collection
-    //...
-
-    // Add plant details to the plant care precautions collection
-    //...
-
-    // Add plant details to the plant care updates collection
-    //...
-
-    // Add plant details to the plant care videos collection
-    //...
-
-    // Add plant details to the plant care resources collection
-    //...
-    //...
-
-    // Add plant details to the seller's inventory
-    //...
-
-    // Update user's inventory count
-    //...
-
-    // Add user's recent activity (added plant)
-    //...
-
-    // Clear form fields
-    //...
-
-    // Redirect to inventory page
-    //...
-    // Send plant data to Firebase
-    // ...
+    console.table({ plant });
+    // save the plant in the database
+    try {
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add plant");
+    } finally {
+      setLoading(false);
+      setUploadButtonText({ name: "Upload Image" });
+      form.reset();
+      toast.success("Plant added successfully");
+    }
   };
   return (
     <div>
@@ -107,7 +70,12 @@ const AddPlant = () => {
       </Helmet>
 
       {/* Form */}
-      <AddPlantForm handleSubmit={handleSubmit} uploadButtonText={uploadButtonText} setUploadButtonText={setUploadButtonText}/>
+      <AddPlantForm
+        handleSubmit={handleSubmit}
+        uploadButtonText={uploadButtonText}
+        setUploadButtonText={setUploadButtonText}
+        loading={loading}
+      />
     </div>
   );
 };
