@@ -4,9 +4,11 @@ import imageUpload from "../../../api/utils";
 import useAuth from "../../../hooks/useAuth";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddPlant = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure()
   const [uploadButtonText, setUploadButtonText] = useState({
     name: "Upload Image",
   });
@@ -53,13 +55,17 @@ const AddPlant = () => {
     console.table({ plant });
     // save the plant in the database
     try {
+      const response = await axiosSecure.post("/plants", plant);
+      console.log(response);
+      
+      // reset the form and show success toast message
     } catch (error) {
       console.error(error);
       toast.error("Failed to add plant");
     } finally {
       setLoading(false);
       setUploadButtonText({ name: "Upload Image" });
-      form.reset();
+      // form.reset();
       toast.success("Plant added successfully");
     }
   };
