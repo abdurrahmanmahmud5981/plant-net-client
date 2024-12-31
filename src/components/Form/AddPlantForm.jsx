@@ -94,7 +94,7 @@ const AddPlantForm = ({
                   <label>
                     <input
                       onChange={(e) => {
-                        setUploadButtonText(e.target.files[0].name);
+                        setUploadButtonText(e.target.files[0]);
                       }}
                       className="text-sm cursor-pointer w-36 hidden"
                       type="file"
@@ -104,12 +104,15 @@ const AddPlantForm = ({
                       hidden
                     />
                     <div className="bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500">
-                      {uploadButtonText}
+                      {uploadButtonText.name}
                     </div>
                   </label>
                 </div>
               </div>
             </div>
+            {uploadButtonText.size && (
+              <p>Image size{uploadButtonText.size} Bytes</p>
+            )}
 
             {/* Submit Button */}
             <button

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const AddPlant = () => {
   const { user } = useAuth();
- const [uploadButtonText, setUploadButtonText] = useState('Upload Image');
+ const [uploadButtonText, setUploadButtonText] = useState({name:'Upload Image'});
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const formData = new FormData(e.target)
