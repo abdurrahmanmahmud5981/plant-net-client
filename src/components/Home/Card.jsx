@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
-const Card = () => {
+const Card = ({plant}) => {
+  const { name, category, image, price, quantity , _id} = plant;
   return (
     <Link
       to={`/plant/1`}
