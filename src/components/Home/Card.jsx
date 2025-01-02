@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const Card = ({ plant }) => {
@@ -45,6 +46,16 @@ const Card = ({ plant }) => {
       </div>
     </Link>
   );
+};
+Card.propTypes = {
+  plant: PropTypes.shape({
+    name: PropTypes.string,
+    category: PropTypes.string,
+    image: PropTypes.string,
+    price: PropTypes.number,
+    quantity: PropTypes.number,
+    _id: PropTypes.string,
+  }).isRequired,
 };
 
 export default Card;
