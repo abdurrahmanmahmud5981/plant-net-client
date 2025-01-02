@@ -112,12 +112,13 @@ const AddPlantForm = ({
                 </div>
               </div>
             </div>
-            { uploadImage&&uploadImage.size  (
-              <>
-              <img src={URL.createObjectURL(uploadImage)} alt="" />
-              <p>Image size{uploadImage.size} Bytes</p>
-              </>
-            )}
+            {uploadImage &&
+              uploadImage.size(
+                <>
+                  <img src={URL.createObjectURL(uploadImage)} alt="" />
+                  <p>Image size{uploadImage.size} Bytes</p>
+                </>
+              )}
 
             {/* Submit Button */}
             <button
@@ -135,14 +136,12 @@ const AddPlantForm = ({
       </form>
     </div>
   );
- 
 };
 AddPlantForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   uploadImage: PropTypes.object.isRequired,
   setUploadImage: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  
 };
 
 export default AddPlantForm;
