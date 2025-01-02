@@ -3,8 +3,8 @@ import { TbFidgetSpinner } from "react-icons/tb";
 
 const AddPlantForm = ({
   handleSubmit,
-  uploadButtonText,
-  setUploadButtonText,
+  uploadImage,
+  setUploadImage,
   loading,
 }) => {
   return (
@@ -96,7 +96,7 @@ const AddPlantForm = ({
                   <label>
                     <input
                       onChange={(e) => {
-                        setUploadButtonText(e.target.files[0]);
+                        setUploadImage(e.target.files[0]);
                       }}
                       className="text-sm cursor-pointer w-36 hidden"
                       type="file"
@@ -106,14 +106,17 @@ const AddPlantForm = ({
                       hidden
                     />
                     <div className="bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500">
-                      {uploadButtonText.name}
+                      {uploadImage.name}
                     </div>
                   </label>
                 </div>
               </div>
             </div>
-            {uploadButtonText.size && (
-              <p>Image size{uploadButtonText.size} Bytes</p>
+            { uploadImage&&uploadImage.size  (
+              <>
+              <img src={URL.createObjectURL(uploadImage)} alt="" />
+              <p>Image size{uploadImage.size} Bytes</p>
+              </>
             )}
 
             {/* Submit Button */}
@@ -132,9 +135,14 @@ const AddPlantForm = ({
       </form>
     </div>
   );
+ 
 };
 AddPlantForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  uploadImage: PropTypes.object.isRequired,
+  setUploadImage: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  
 };
 
 export default AddPlantForm;

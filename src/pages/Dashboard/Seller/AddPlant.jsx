@@ -9,7 +9,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const AddPlant = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure()
-  const [uploadButtonText, setUploadButtonText] = useState({
+  const [uploadImage, setUploadImage] = useState({
     name: "Upload Image",
   });
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const AddPlant = () => {
       toast.error("Failed to add plant");
     } finally {
       setLoading(false);
-      setUploadButtonText({ name: "Upload Image" });
+      setUploadImage({ name: "Upload Image" });
       // form.reset();
       toast.success("Plant added successfully");
     }
@@ -78,8 +78,8 @@ const AddPlant = () => {
       {/* Form */}
       <AddPlantForm
         handleSubmit={handleSubmit}
-        uploadButtonText={uploadButtonText}
-        setUploadButtonText={setUploadButtonText}
+        uploadImage={uploadImage}
+        setUploadImage={setUploadImage}
         loading={loading}
       />
     </div>
