@@ -8,10 +8,11 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddPlant = () => {
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const [uploadImage, setUploadImage] = useState({
-    name: "Upload Image",
+     name: "Upload Image"
   });
+  console.log(uploadImage);
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +58,7 @@ const AddPlant = () => {
     try {
       const response = await axiosSecure.post("/plants", plant);
       console.log(response);
-      
+
       // reset the form and show success toast message
     } catch (error) {
       console.error(error);
