@@ -13,7 +13,7 @@ const PlantDetails = () => {
   const { id } = useParams();
   let [isOpen, setIsOpen] = useState(false);
   const {
-    data: plant = {},
+    data: plant = [],
     isLoading,
     refetch,
   } = useQuery({
@@ -30,15 +30,7 @@ const PlantDetails = () => {
     setIsOpen(false);
   };
   console.log(plant);
-  const {
-    name,
-    image,
-    price,
-    quantity,
-    category,
-    description,
-    seller: { name: sallerName, image: sallerImage },
-  } = plant;
+  const { name, image, price, quantity, category, description, seller } = plant;
   if (isLoading) return <LoadingSpinner />;
   return (
     <Container>
@@ -76,7 +68,7 @@ const PlantDetails = () => {
                 gap-2
               "
           >
-            <div>Seller: {sallerName}</div>
+            <div>Seller: {seller?.name}</div>
 
             <img
               className="rounded-full"
@@ -84,7 +76,7 @@ const PlantDetails = () => {
               width="30"
               alt="seller"
               referrerPolicy="no-referrer"
-              src={sallerImage}
+              src={seller?.image}
             />
           </div>
           <hr className="my-6" />
@@ -103,12 +95,15 @@ const PlantDetails = () => {
           <div className="flex justify-between">
             <p className="font-bold text-3xl text-gray-500">Price: {price}$</p>
             <div>
-              <Button label={quantity > 0 ? "Purchase" : "Out Of Stock"} />
+              <Button
+                onClick={() => setIsOpen(true)}
+                label={quantity > 0 ? "Purchase" : "Out Of Stock"}
+              />
             </div>
           </div>
           <hr className="my-6" />
 
-          <PurchaseModal closeModal={closeModal} isOpen={isOpen} />
+          {plant && <PurchaseModal closeModal={closeModal} isOpen={isOpen} plant={plant}/>}
         </div>
       </div>
     </Container>

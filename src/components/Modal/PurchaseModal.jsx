@@ -7,8 +7,18 @@ import {
   DialogTitle,
 } from '@headlessui/react'
 import { Fragment } from 'react'
+import Button from '../Shared/Button/Button'
 
-const PurchaseModal = ({ closeModal, isOpen }) => {
+const PurchaseModal = ({ closeModal, isOpen,plant }) => {
+    const {
+    name,
+    image,
+    price,
+    quantity,
+    category,
+    description,
+    seller: { name: sallerName, image: sallerImage },
+  } = plant || {};
   // Total Price Calculation
 
   return (
@@ -59,6 +69,40 @@ const PurchaseModal = ({ closeModal, isOpen }) => {
                 </div>
                 <div className='mt-2'>
                   <p className='text-sm text-gray-500'>Available Quantity: 5</p>
+                </div>
+                {/* quantity input field */}
+                <div className='mt-2 space-x-2'>
+                  <label htmlFor='quantity' className=' text-gray-600'>
+                    Quantity
+                  </label>
+                  <input
+                    max={3}
+                    min={1}
+                    className=' p-2 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
+                    name='quantity'
+                    id='quantity'
+                    type='number'
+                    placeholder='Enter Quantity'
+                    required
+                  />
+                </div>
+                {/* address input filde */}
+                <div className='mt-2'>
+                  <label htmlFor='address' className='block text-gray-600'>
+                    Address
+                  </label>
+                  <input
+                    className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
+                    name='address'
+                    id='address'
+                    type='text'
+                    placeholder='Enter Address'
+                    required
+                  />
+                </div>
+                {/* Purchase Button */}
+                <div className="mt-4">
+                <Button label={'Purchase'}/>
                 </div>
               </DialogPanel>
             </TransitionChild>
