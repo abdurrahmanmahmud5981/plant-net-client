@@ -123,7 +123,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
                 </div>
                 {/* Purchase Button */}
                 <div className="mt-4">
-                  <Button label={"Purchase"} />
+                  <Button label={`Pay ${totalPrice} $`} />
                 </div>
               </DialogPanel>
             </TransitionChild>
