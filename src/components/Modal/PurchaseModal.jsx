@@ -10,9 +10,12 @@ import { Fragment, useState } from "react";
 import Button from "../Shared/Button/Button";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+
 
 const PurchaseModal = ({ closeModal, isOpen, plant }) => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure()
   const { name, price, quantity, category, _id, seller } =
     plant || {};
   const [totalQuantity, setTotalQuantity] = useState(1);
@@ -49,7 +52,15 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
     console.table(purchaseInfo);
 
     // post request to db
-
+    try{
+      await axiosSecure.post('/orders', purchaseInfo);
+      toast.success("Purchase Successful");
+    }catch(err){
+      console.log(err);
+    }
+    finally{
+      closeModal();
+    }
   };
 
   return (
