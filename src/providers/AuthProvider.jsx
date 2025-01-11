@@ -55,6 +55,8 @@ const AuthProvider = ({ children }) => {
       console.log("CurrentUser-->", currentUser?.email);
       if (currentUser?.displayName) {
         setUser(currentUser);
+      setLoading(false);
+
         console.log({
           name: currentUser?.displayName,
           image: currentUser?.photoURL,
@@ -82,8 +84,9 @@ const AuthProvider = ({ children }) => {
         await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
           withCredentials: true,
         });
-      }
       setLoading(false);
+
+      }
     });
     return () => {
       return unsubscribe();

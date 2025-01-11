@@ -103,7 +103,7 @@ const PlantDetails = () => {
           </div>
           <hr className="my-6" />
 
-          {plant && <PurchaseModal closeModal={closeModal} isOpen={isOpen} plant={plant}/>}
+          {plant && <PurchaseModal closeModal={closeModal} isOpen={isOpen} plant={plant} refetch={refetch}/>}
         </div>
       </div>
     </Container>
