@@ -84,7 +84,7 @@ const MyOrders = () => {
                 </thead>
                 <tbody>
                   {
-                    orders.length > 0 && orders.map((order) =><CustomerOrderDataRow key={order._id} order={order}/>)
+                    orders.length > 0 && orders.map((order) =><CustomerOrderDataRow key={order._id} order={order} refetch={refetch}/>)
                   }
                 </tbody>
               </table>
