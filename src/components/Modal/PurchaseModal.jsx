@@ -12,18 +12,24 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 
 const PurchaseModal = ({ closeModal, isOpen, plant }) => {
-  const {
-    name,
-    image,
-    price,
-    quantity,
-    category,
-    description,
-    seller: { name: sallerName, image: sallerImage },
-  } = plant || {};
+  const { user } = useAuth();
+  const { name, price, quantity, category, _id, seller } =
+    plant || {};
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(price);
-  const { user } = useAuth();
+  const [purchaseInfo, setPurchaseInfo] = useState({
+    customer: {
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.photoURL,
+    },
+    plantId: _id,
+    price: totalPrice,
+    quantity: totalQuantity,
+    seller: seller?.email,
+    address: "",
+    status: "Pending",
+  });
 
   const handleQuantity = (value) => {
     if (value > quantity) {
@@ -32,9 +38,19 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
     }
     if (value < 0) return toast.error("Quantity cannot be less than 1");
     setTotalQuantity(value);
+    // Total Price Calculation
     setTotalPrice(value * price);
+    setPurchaseInfo((prev) => {
+      return { ...prev, quantity: value, price: value * price };
+    });
   };
-  // Total Price Calculation
+
+  const handlePurchase = async () => {
+    console.table(purchaseInfo);
+
+    // post request to db
+
+  };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -97,7 +113,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
                   <input
                     // max={quantity}
                     // min={quantity - quantity + 1}
-                    value={totalQuantity}
+                    value={totalQuantity || 0}
                     onChange={(e) => handleQuantity(parseInt(e.target.value))}
                     className=" p-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
                     name="quantity"
@@ -116,6 +132,11 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
                     className="px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
                     name="address"
                     id="address"
+                    onChange={(e) =>
+                      setPurchaseInfo((prev) => {
+                        return { ...prev, address: e.target.value };
+                      })
+                    }
                     type="text"
                     placeholder="Shipping Address"
                     required
@@ -123,7 +144,10 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
                 </div>
                 {/* Purchase Button */}
                 <div className="mt-4">
-                  <Button label={`Pay ${totalPrice} $`} />
+                  <Button
+                    onClick={handlePurchase}
+                    label={`Pay ${totalPrice || 0} $`}
+                  />
                 </div>
               </DialogPanel>
             </TransitionChild>
