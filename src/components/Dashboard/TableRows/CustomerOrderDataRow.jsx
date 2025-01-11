@@ -2,27 +2,33 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import DeleteModal from "../../Modal/DeleteModal";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-const CustomerOrderDataRow = ({ order,refetch }) => {
+import toast from "react-hot-toast";
+const CustomerOrderDataRow = ({ order, refetch }) => {
   const axiosSecure = useAxiosSecure();
   let [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
-  const { name, image, price, category, quantity, _id ,status} = order||{};
+  const { name, image, price, category, quantity, _id, status,plantId } = order || {};
 
-
-  // handle order delet 
+  // handle order delet
   const handleDelete = async () => {
     try {
       console.log(_id);
       await axiosSecure.delete(`/orders/${_id}`);
-      
-      // call refetch to refresh the ui 
+      // increase quantity
+      await axiosSecure.patch(`/plants/quantity/${plantId}`, {
+        quantityToUpdate: quantity,
+        status: "increase",
+      });
+      // call refetch to refresh the ui
       refetch();
+      toast.success('Order Cancelled')
     } catch (error) {
       console.log(error);
-    }finally{
+      toast.error(`${error.response.data.message}`)
+    } finally {
       closeModal();
     }
-  }
+  };
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -31,7 +37,8 @@ const CustomerOrderDataRow = ({ order,refetch }) => {
             <div className="block relative">
               <img
                 alt={name}
-                src={image} className="mx-auto object-cover rounded h-10 w-15 "
+                src={image}
+                className="mx-auto object-cover rounded h-10 w-15 "
               />
             </div>
           </div>
@@ -63,7 +70,11 @@ const CustomerOrderDataRow = ({ order,refetch }) => {
           <span className="relative cursor-pointer">Cancel</span>
         </button>
 
-        <DeleteModal handleDelete={handleDelete} isOpen={isOpen} closeModal={closeModal} />
+        <DeleteModal
+          handleDelete={handleDelete}
+          isOpen={isOpen}
+          closeModal={closeModal}
+        />
       </td>
     </tr>
   );
