@@ -17,9 +17,9 @@ const UserDataRow = ({ userData, refetch }) => {
       });
       toast.success(`Role ${selectedRole} updated successfully `);
       await refetch();
- 
     } catch (error) {
-      console.log(error);
+      
+      toast.error(`Failed to update role for ${email}`);
     } finally {
       setIsOpen(false);
     }
