@@ -5,24 +5,28 @@ import { useState } from "react";
 import BecomeSellerModal from "../../../Modal/BecomeSellerModal";
 import useAuth from "../../../../hooks/useAuth";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 const CustomerMenu = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useAuth;
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => {
     setIsOpen(false);
   };
-
+  console.log(user);
   const requestHandler = async () => {
     // Send request to server for seller registration
-    console.log("Request sent for seller registration");
-    setIsOpen(false);
     try {
       // send request to server
       const { data } = await axiosSecure.patch(`/users/${user?.email}`);
+      console.log(data);
+      toast.success("Successfully Applied to become a seller ");
     } catch (err) {
-      console.log("error sending request", err);
+     
+      toast.error(err.response.data);
+    } finally {
+      closeModal();
     }
   };
 
