@@ -69,7 +69,6 @@ const AuthProvider = ({ children }) => {
             name: currentUser?.displayName,
             image: currentUser?.photoURL,
             email: currentUser?.email,
-         
           })
         // Get JWT token
         await axios.post(
