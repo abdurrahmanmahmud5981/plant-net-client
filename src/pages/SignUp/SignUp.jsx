@@ -29,7 +29,7 @@ const SignUp = () => {
       await updateUserProfile(name, photoURL);
       console.log(result);
       // save user information in the database if he is new
-      await saveUser(result?.user);
+      await saveUser({ ...result?.user, displayName: name, photoURL });
       navigate("/");
       toast.success("Signup Successful");
     } catch (err) {
