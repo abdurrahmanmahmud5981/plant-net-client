@@ -84,7 +84,9 @@ const ManageOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <SellerOrderDataRow />
+                  {
+                    orders.map(orderData => <SellerOrderDataRow key={orderData?._id} order={orderData} refetch={refetch}/>)
+                  }
                 </tbody>
               </table>
             </div>
