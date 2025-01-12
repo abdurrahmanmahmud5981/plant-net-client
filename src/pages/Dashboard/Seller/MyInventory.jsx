@@ -81,7 +81,13 @@ const MyInventory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <PlantDataRow  refetch={refetch} plants={plants}/>
+                  {plants.map((plant) => (
+                    <PlantDataRow
+                      key={plant._id}
+                      plant={plant}
+                      refetch={refetch}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
