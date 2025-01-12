@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 const Plants = () => {
-  const { data: plants, isLoading } = useQuery({
+  const { data: plants =[], isLoading } = useQuery({
     queryKey: ["plants"],
     queryFn: async () => {
       const { data } = await axios.get(
