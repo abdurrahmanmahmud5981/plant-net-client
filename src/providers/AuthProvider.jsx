@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
           role: "customer",
         });
         // // save user information in database
-        if (user?.displayName && user?.photoURL) {
+        if (currentUser?.displayName && currentUser?.photoURL) {
           await axios.post(
             `${import.meta.env.VITE_API_URL}/users/${currentUser.email}`,
             {
