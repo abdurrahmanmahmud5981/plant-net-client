@@ -3,6 +3,7 @@ import DeleteModal from "../../Modal/DeleteModal";
 import UpdatePlantModal from "../../Modal/UpdatePlantModal";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import { PropTypes } from "prop-types";
 
 const PlantDataRow = ({ refetch, plant }) => {
   const axiosSecure = useAxiosSecure();
@@ -70,7 +71,11 @@ const PlantDataRow = ({ refetch, plant }) => {
           <span className="relative">Delete</span>
         </span>
         {/* Delete Modal */}
-        <DeleteModal handleDelete={handlePlantDelete}  isOpen={isOpen} closeModal={closeModal} />
+        <DeleteModal
+          handleDelete={handlePlantDelete}
+          isOpen={isOpen}
+          closeModal={closeModal}
+        />
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span
@@ -90,6 +95,10 @@ const PlantDataRow = ({ refetch, plant }) => {
       </td>
     </tr>
   );
+};
+PlantDataRow.propTypes = {
+  plant: PropTypes.object.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default PlantDataRow;
