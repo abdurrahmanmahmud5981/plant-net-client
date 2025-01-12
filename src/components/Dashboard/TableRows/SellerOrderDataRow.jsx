@@ -30,6 +30,22 @@ const SellerOrderDataRow = ({order, refetch}) => {
         closeModal();
       }
     };
+    // handle status update 
+    const handleStatus= async (newStatus)=>{
+      if(status === newStatus) return;
+      try {
+        // update the order status
+       
+        await axiosSecure.patch(`/orders/${_id}`,{status:newStatus});
+        
+        // call refetch to refresh the ui
+        refetch();
+        toast.success('Status updated')
+      } catch (error) {
+        console.log(error);
+        toast.error(`${error.response.data.message}`)
+      }
+    }
   return (
     <tr>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -55,7 +71,9 @@ const SellerOrderDataRow = ({order, refetch}) => {
         <div className='flex items-center gap-2'>
           <select
             required
+            onChange={(e)=>handleStatus(e.target.value)}
             defaultValue={status}
+            disabled={status==='Delivered'}
             className='p-1 border-2 border-lime-300 focus:outline-lime-500 rounded-md text-gray-900 whitespace-no-wrap bg-white'
             name='category'
           >
