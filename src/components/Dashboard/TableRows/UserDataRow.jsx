@@ -13,9 +13,17 @@ const UserDataRow = ({ userData }) => {
         <p className="text-gray-900 whitespace-no-wrap">{role}</p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-red-500 whitespace-no-wrap">
-          {status ? status : "Unavailable"}
-        </p>
+        {status ? (
+          <p
+            className={`${
+              status === "Requested" ? "text-yellow-500" : "text-green-500"
+            } whitespace-no-wrap`}
+          >
+            {status}
+          </p>
+        ) : (
+          <p className="text-red-500">Unavailable</p>
+        )}
       </td>
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
