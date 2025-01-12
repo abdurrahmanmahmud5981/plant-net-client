@@ -55,21 +55,25 @@ const AuthProvider = ({ children }) => {
       console.log("CurrentUser-->", currentUser?.email);
       if (currentUser?.displayName) {
         setUser(currentUser);
-      setLoading(false);
+        setLoading(false);
 
         console.log({
           name: currentUser?.displayName,
           image: currentUser?.photoURL,
           email: currentUser?.email,
-          role: 'customer',
+          role: "customer",
         });
         // // save user information in database
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/users/${currentUser.email}`,{
-            name: currentUser?.displayName,
-            image: currentUser?.photoURL,
-            email: currentUser?.email,
-          })
+        if (user?.displayName && user?.photoURL) {
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/users/${currentUser.email}`,
+            {
+              name: currentUser?.displayName,
+              image: currentUser?.photoURL,
+              email: currentUser?.email,
+            }
+          );
+        }
         // Get JWT token
         await axios.post(
           `${import.meta.env.VITE_API_URL}/jwt`,
@@ -83,8 +87,7 @@ const AuthProvider = ({ children }) => {
         await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
           withCredentials: true,
         });
-      setLoading(false);
-
+        setLoading(false);
       }
     });
     return () => {
