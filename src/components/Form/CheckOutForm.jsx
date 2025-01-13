@@ -3,8 +3,30 @@ import PropTypes from "prop-types";
 
 import "./CheckOutForm";
 import Button from "../Shared/Button/Button";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const CheckOutForm = ({ closeModal, purchaseInfo, refetch }) => {
+  const axiosSecure = useAxiosSecure();
+  const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+ getPaymentIntent()
+   
+  }, [purchaseInfo]);
+console.log(clientSecret);
+  const getPaymentIntent = async () => {
+    try {
+      const { data } = await axiosSecure.post("/create-payment-intent", {
+        quantity: purchaseInfo?.quantity,
+        plantId: purchaseInfo?.plantId,
+      });
+     setClientSecret(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -74,9 +96,7 @@ const CheckOutForm = ({ closeModal, purchaseInfo, refetch }) => {
 };
 CheckOutForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  purchaseInfo: PropTypes.shape({
-    price: PropTypes.number.isRequired,
-  }).isRequired,
+  purchaseInfo: PropTypes.object.isRequired,
   refetch: PropTypes.func.isRequired,
 };
 
