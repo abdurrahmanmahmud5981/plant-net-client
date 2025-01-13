@@ -5,23 +5,27 @@ import "./CheckOutForm";
 import Button from "../Shared/Button/Button";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const CheckOutForm = ({ closeModal, purchaseInfo, refetch }) => {
+const CheckOutForm = ({ closeModal, purchaseInfo, refetch, totalQuantity }) => {
+  const navigate = useNavigate();
+  // const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [clientSecret, setClientSecret] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
- getPaymentIntent()
-   
+    getPaymentIntent();
   }, [purchaseInfo]);
-console.log(clientSecret);
+  console.log(clientSecret);
   const getPaymentIntent = async () => {
     try {
-      const { data } = await axiosSecure.post("/create-payment-intent", {
+      const { data = {} } = await axiosSecure.post("/create-payment-intent", {
         quantity: purchaseInfo?.quantity,
         plantId: purchaseInfo?.plantId,
       });
-     setClientSecret(data);
+      setClientSecret(data?.clientSecret);
     } catch (err) {
       console.log(err);
     }
@@ -29,12 +33,14 @@ console.log(clientSecret);
 
   const stripe = useStripe();
   const elements = useElements();
-
+  console.log(stripe);
   const handleSubmit = async (event) => {
+    setProcessing(true);
     // Block native form submission.
     event.preventDefault();
 
     if (!stripe || !elements) {
+      setProcessing(false);
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
       return;
@@ -46,6 +52,7 @@ console.log(clientSecret);
     const card = elements.getElement(CardElement);
 
     if (card == null) {
+      setProcessing(false);
       return;
     }
 
@@ -56,9 +63,44 @@ console.log(clientSecret);
     });
 
     if (error) {
+      setProcessing(false);
       console.log("[error]", error);
     } else {
+      setProcessing(false);
       console.log("[PaymentMethod]", paymentMethod);
+    }
+
+    // cofirm the payment
+    const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          name: purchaseInfo?.customer?.name,
+          email: purchaseInfo?.customer?.email,
+        },
+      },
+    });
+    console.log(paymentIntent);
+    if (paymentIntent.status === "succeeded") {
+      try {
+        await axiosSecure.post("/orders", {
+          ...purchaseInfo,
+          transactionId: paymentIntent?.id,
+        });
+        // decrease quantity
+        await axiosSecure.patch(`/plants/quantity/${purchaseInfo?.plantId}`, {
+          quantityToUpdate: totalQuantity,
+          status: "decrease",
+        });
+        refetch();
+        toast.success("Purchase Successful");
+        navigate("/dashboard/my-orders");
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setProcessing(false);
+        closeModal();
+      }
     }
   };
 
@@ -85,7 +127,7 @@ console.log(clientSecret);
       />
       <div className="flex justify-around gap-8">
         <Button
-          disabled={!stripe}
+          disabled={!stripe || !clientSecret || processing}
           type="submit"
           label={`Pay ${purchaseInfo?.price} $`}
         />
@@ -98,6 +140,7 @@ CheckOutForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
   purchaseInfo: PropTypes.object.isRequired,
   refetch: PropTypes.func.isRequired,
+  totalQuantity: PropTypes.number.isRequired,
 };
 
 export default CheckOutForm;
