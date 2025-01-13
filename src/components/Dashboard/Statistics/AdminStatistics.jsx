@@ -8,7 +8,7 @@ import Chart from "../Charts/Chart";
 
 const AdminStatistics = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: statData = {}, isLoading } = useQuery({
+  const { data: statData = [], isLoading } = useQuery({
     queryKey: ["admin-statistics"],
     queryFn: async () => {
       // Fetch data from an API

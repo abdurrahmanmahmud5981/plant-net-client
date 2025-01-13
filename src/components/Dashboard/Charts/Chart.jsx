@@ -42,7 +42,7 @@ const Chart = ({chartData}) => {
         <ComposedChart
         width={730}
         height={400}
-        data={[chartData]}
+        data={chartData}
         margin={{
           top: 20,
           right: 80,
