@@ -7,15 +7,16 @@ import LoadingSpinner from "../../Shared/LoadingSpinner";
 
 const AdminStatistics = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: statData, isLoading } = useQuery({
+  const { data: statData = {}, isLoading } = useQuery({
     queryKey: ["admin-statistics"],
     queryFn: async () => {
       // Fetch data from an API
-      const {data} = await axiosSecure('/admin-stat')
+      const { data } = await axiosSecure("/admin-stat");
       return data;
     },
   });
-console.log(statData);
+  const { totalUser, totalPlants } = statData;
+  console.log(statData);
   if (isLoading) return <LoadingSpinner />;
   return (
     <div>
@@ -66,7 +67,7 @@ console.log(statData);
                 Total Plants
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                120
+                {totalPlants}
               </h4>
             </div>
           </div>
@@ -82,7 +83,7 @@ console.log(statData);
                 Total User
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                10
+                {totalUser}
               </h4>
             </div>
           </div>
