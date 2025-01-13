@@ -15,7 +15,7 @@ const AdminStatistics = () => {
       return data;
     },
   });
-  const { totalUser, totalPlants } = statData;
+  const { totalUser, totalPlants, totalRevenue, totalOrder } = statData;
   console.log(statData);
   if (isLoading) return <LoadingSpinner />;
   return (
@@ -35,7 +35,7 @@ const AdminStatistics = () => {
                 Total Revenue
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                $120
+                ${totalRevenue}
               </h4>
             </div>
           </div>
@@ -51,7 +51,7 @@ const AdminStatistics = () => {
                 Total Orders
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                120
+                {totalOrder}
               </h4>
             </div>
           </div>
