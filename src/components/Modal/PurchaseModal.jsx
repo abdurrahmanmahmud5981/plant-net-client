@@ -7,14 +7,18 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import Button from "../Shared/Button/Button";
+
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckOutForm from "../Form/CheckOutForm";
 
-const PurchaseModal = ({ closeModal, isOpen, plant,refetch }) => {
-  const navigate = useNavigate()
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+const PurchaseModal = ({ closeModal, isOpen, plant, refetch }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { name, price, quantity, category, _id, seller } = plant || {};
@@ -57,11 +61,11 @@ const PurchaseModal = ({ closeModal, isOpen, plant,refetch }) => {
       // decrease quantity
       await axiosSecure.patch(`/plants/quantity/${_id}`, {
         quantityToUpdate: totalQuantity,
-        status: 'decrease'
+        status: "decrease",
       });
       refetch();
       toast.success("Purchase Successful");
-      navigate('/dashboard/my-orders')
+      navigate("/dashboard/my-orders");
     } catch (err) {
       console.log(err);
     } finally {
@@ -159,13 +163,15 @@ const PurchaseModal = ({ closeModal, isOpen, plant,refetch }) => {
                     required
                   />
                 </div>
-                {/* Purchase Button */}
-                <div className="mt-4">
-                  <Button
-                    onClick={handlePurchase}
-                    label={`Pay ${totalPrice || 0} $`}
-                  />
-                </div>
+
+                {/* checkout form */}
+               
+                <Elements  stripe={stripePromise}>
+                  {/* from component */}
+                  <CheckOutForm closeModal={closeModal} purchaseInfo={purchaseInfo} refetch={refetch} />
+                </Elements>
+               
+                
               </DialogPanel>
             </TransitionChild>
           </div>
